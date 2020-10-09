@@ -44,7 +44,7 @@ async def game(ctx, game_id: int):
     gameDF = puntDF[(puntDF.gameID == game_id) & (puntDF.percentiles >= 90)]
     await ctx.send("All 90th percentile punts from game %s (%i total):"%(len(gameDF),game_id))
     for i in range(len(gameDF)):
-        embed=discord.Embed(title=gameDF['play'].iloc[i],color="0xff7b00")
+        embed=discord.Embed(title=gameDF['play'].iloc[i],color=0xff7b00)
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
         embed.set_author(name="S%i - %s @ %s (%i/%i)"%(gameDF['S'].iloc[i],gameDF['awayTeam'].iloc[i],gameDF['homeTeam'].iloc[i],i,len(gameDF)))
         embed.add_field(name="Game Situation", value=gameDF['situation'].iloc[i], inline=False)

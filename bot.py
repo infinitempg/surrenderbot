@@ -48,16 +48,21 @@ async def game(ctx, game_id: int):
 
 @bot.command(name='top', help='List of top Surrender Punts')
 async def top(ctx, S: int, team: str):
-    if S, team:
-        top5DF = puntDF[(puntDF.S == S) & (puntDF.teamPoss == team)]
-    elif S:
-        top5DF = puntDF[puntDF.S == S]
-    elif team:
-        top5DF = puntDF[puntDF.teamPoss == team]
-    else:
-        top5DF = puntDF.head(5)
+    try:
+        if S & team:
+            top5DF = puntDF[(puntDF.S == S) & (puntDF.teamPoss == team)]
+    except NameError:
+        try:
+            if S:
+                top5DF = puntDF[puntDF.S == S]
+        except NameError:
+            try:
+                if team:
+                    top5DF = puntDF[puntDF.teamPoss == team]
+            except NameError:
+                top5DF = puntDF.head(5)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
-    table = tabulate(top5DF[['Rank','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+    table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
     await ctx.send("```%s```"%table)
     return
 

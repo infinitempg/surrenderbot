@@ -13,7 +13,10 @@ TOKEN = environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='s!')
 
-class GameStats:
+class GameStats(commands.Cog):
+    
+    def __init__(self, bot):
+        self.bot = bot
     
     @bot.command(name='game', help='Get surrender index for a game ID.')
     async def game(ctx, game_id: int):
@@ -48,10 +51,14 @@ class GameStats:
             await ctx.send(embed=embed)
         return
     
-class AllTime:
+class AllTime(commands.Cog):
     '''
     Look up all-time surrender punt statistics
     '''
+    
+    def __init__(self, bot):
+        self.bot = bot
+    
     @bot.command(name='top', help='List of top Surrender Punts')
     async def top(ctx):
         top5DF = puntDF.head(5)

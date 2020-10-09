@@ -50,7 +50,7 @@ async def game(ctx, game_id: int):
 #         embed.add_field(name=Punt, value=gameDF['play'].iloc[i], inline=False)
         embed.add_field(name="Score", value=gameDF['surrenderIndex'].iloc[i], inline=False)
         embed.add_field(name="Rank", value=gameDF['surrenderRank'].iloc[i], inline=True)
-        embed.add_field(name="Percentile", value=gameDF['percentile'].iloc[i], inline=True)
+        embed.add_field(name="Percentile", value=gameDF['percentiles'].iloc[i], inline=True)
         embed.set_footer(text="SurrenderBot by infinitempg")
         await ctx.send(embed=embed)
 #     gameDF = gameDF.rename(columns = {'surrenderIndex':'Score','surrenderRank':'Rank','situation':'Game Situation','play':'Punt'})

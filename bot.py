@@ -42,7 +42,7 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
 async def game(ctx, game_id: int):
     gameDF = puntDF[puntDF.gameID == game_id]
     gameDF = gameDF.rename(columns = {'surrenderIndex':'Score','surrenderRank':'Rank'})
-    table = tabulate(gameDF[['situation', 'play','Score','Rank']],headers='keys',tablefmt='psql',showindex=False)
+    table = tabulate(gameDF[['situation', 'play','Score','Rank']],headers='keys',tablefmt='simple',showindex=False)
     await ctx.send('**%s @ %s - S%s**'%(gameDF['awayTeam'].iloc[0],gameDF['homeTeam'].iloc[0],gameDF['S'].iloc[0]))
     await ctx.send("```%s```"%table)
 

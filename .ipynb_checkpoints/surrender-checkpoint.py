@@ -90,7 +90,7 @@ def stringify(row):
     else:
         puntScore = row['homeScore']
         recScore = row['awayScore']
-    return "Q%s - %s - %i%s and %i\n%s %s - %s %s"%(row['Q'],row['time'],row['down'],num[int(row['down'])-1],row['distance'],row['teamPoss'],puntScore,row['recTeam'],recScore)
+    return "Q%s - %s - %i%s and %i\n%s %s - %s %s\n"%(row['Q'],row['time'],row['down'],num[int(row['down'])-1],row['distance'],row['teamPoss'],puntScore,row['recTeam'],recScore)
 
 
 

@@ -40,10 +40,10 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
     
 @bot.command(name='game', help='Get surrender index for a game ID.')
 async def game(ctx, game_id: int):
-    gameDF = puntDF[puntDF.gameID == game_id]
+    gameDF = puntDF[(puntDF.gameID == game_id) & (puntDF.percentiles >= 90)]
     gameDF = gameDF.rename(columns = {'surrenderIndex':'Score','surrenderRank':'Rank'})
     table = tabulate(gameDF[['situation', 'play','Score','Rank']],headers='keys',tablefmt='simple',showindex=False)
-    await ctx.send('**%s @ %s - S%s**'%(gameDF['awayTeam'].iloc[0],gameDF['homeTeam'].iloc[0],gameDF['S'].iloc[0]))
+    await ctx.send('S%s - **%s @ %s - All 90th Percentile Surrender Punts**'%(gameDF['S'].iloc[0],gameDF['awayTeam'].iloc[0],gameDF['homeTeam'].iloc[0]))
     await ctx.send("```%s```"%table)
 
 bot.run(TOKEN)

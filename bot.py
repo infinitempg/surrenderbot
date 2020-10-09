@@ -42,7 +42,6 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
 async def game(ctx, game_id: int):
     gameDF = puntDF[puntDF.gameID == game_id]
       
-    await ctx.send(print(tabulate(gameDF[['teamPoss','recTeam','Q','time','down','distance','dist2goal', 'play','surrenderIndex','surrenderRank']],
-                                  headers='keys',tablefmt='github',showindex=False)))
+    await ctx.send(tabulate(gameDF[['teamPoss','recTeam','Q','time','down','distance','dist2goal', 'play','surrenderIndex','surrenderRank']],headers='keys',tablefmt='github',showindex=False))
 
 bot.run(TOKEN)

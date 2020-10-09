@@ -3,7 +3,6 @@ import random
 from os import environ
 
 from discord.ext import commands
-from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = environ['DISCORD_TOKEN']

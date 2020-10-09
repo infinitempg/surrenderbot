@@ -3,6 +3,7 @@ import random
 from os import environ
 import pandas as pd
 import tabulate
+import discord
 from discord.ext import commands
 from tabulate import tabulate
 

@@ -70,7 +70,7 @@ class AllTime:
         
         top5DF = puntDF[puntDF.S == S].head(5)
         top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
-        table = tabulate(top5DF[['Rank',,'Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+        table = tabulate(top5DF[['Rank','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
         await ctx.send("Top 5 Surrender Punts in S%i"%S)
         await ctx.send("```%s```"%table)
         return
@@ -92,7 +92,7 @@ class AllTime:
             
         top5DF = puntDF[puntDF.teamPoss == teamT].head(5)
         top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
-        table = tabulate(top5DF[['Rank',,'Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+        table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
         await ctx.send("Top 5 Surrender Punts in S%i"%S)
         await ctx.send("```%s```"%table)
         return

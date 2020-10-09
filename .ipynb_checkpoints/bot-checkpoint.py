@@ -39,11 +39,19 @@ async def game(ctx, game_id: int):
                          url="%s/Boxscores/%s.html"%(urlprefix,game_id))
         embed.add_field(name="Game Situation", value=gameDF['situation'].iloc[i], inline=False)
 #         embed.add_field(name=Punt, value=gameDF['play'].iloc[i], inline=False)
-        embed.add_field(name="Surrender Index", value=gameDF['surrenderIndex'].iloc[i], inline=False)
+        embed.add_field(name="Surrender Index", value=round(gameDF['surrenderIndex'].iloc[i],3), inline=False)
         embed.add_field(name="Overall Rank", value=gameDF['surrenderRank'].iloc[i], inline=True)
         embed.add_field(name="Percentile", value=round(gameDF['percentiles'].iloc[i],3), inline=True)
         embed.set_footer(text="SurrenderBot, by infinitempg")
         await ctx.send(embed=embed)
+    return
 
+@bot.command(name='top', help='List of top Surrender Punts')
+async def top(ctx):
+    top5DF = puntDF.head(5)
+    top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
+    table = tabulate(top5DF[['Game Situation', 'Punt','Index','Rank','Perc.']],headers='keys',tablefmt='simple',showindex=False)
+    await ctx.send("```table```")
+    return
 
 bot.run(TOKEN)

@@ -12,6 +12,18 @@ puntDF = pd.read_csv('surrender.csv')
 TOKEN = environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='s!')
+
+@bot.command(name='help', help='Help')
+async def help(ctx):
+    embed=discord.Embed(title=" ", color=0xff9500)
+    embed.set_author(name="Commands for Surrender Bot")
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
+    embed.add_field(name="Game Commands", value="`s!game [gameID]`", inline=True)
+    embed.add_field(name="All-Time Records", value="`s!top`", inline=True)
+    embed.add_field(name="Season Records", value="`s!topS [season #]`", inline=True)
+    embed.add_field(name="Team Records", value="`s!topTeam [Team Initials]`", inline=True)
+    await ctx.send(embed=embed)
+    
    
 @bot.command(name='game', help='Get surrender index for a game ID.')
 async def game(ctx, game_id: int):
@@ -51,7 +63,7 @@ async def top(ctx):
     top5DF = puntDF.head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
-    await ctx.send("Top 5 All-Time Surrender Punts")
+    await ctx.send("Top 10 All-Time Surrender Punts")
     await ctx.send("```%s```"%table)
     return
 
@@ -65,7 +77,7 @@ async def topS(ctx, S: int):
     top5DF = puntDF[puntDF.S == S].head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
-    await ctx.send("Top 5 Surrender Punts in S%i"%S)
+    await ctx.send("Top 10 Surrender Punts in S%i"%S)
     await ctx.send("```%s```"%table)
     return
 
@@ -87,7 +99,7 @@ async def topTeam(ctx, team: str):
     top5DF = puntDF[puntDF.teamPoss == teamT].head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
-    await ctx.send("Top 5 Surrender Punts for %s"%team)
+    await ctx.send("Top 10 Surrender Punts for %s"%team)
     await ctx.send("```%s```"%table)
     return
 

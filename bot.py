@@ -56,7 +56,7 @@ async def top(ctx):
     return
 
 @bot.command(name='topS', help='List of top Surrender Punts by Season')
-async def topS(ctx, S = int):
+async def topS(ctx, S: int):
 
     if S not in puntDF.S.unique():
         await ctx.send("Season not found.")
@@ -70,7 +70,7 @@ async def topS(ctx, S = int):
     return
 
 @bot.command(name='topT', help='List of top Surrender Punts by Team')
-async def topT(ctx, team = str):
+async def topT(ctx, team: str):
 
     if team == 'ARI':
         teamT = 'AZ'

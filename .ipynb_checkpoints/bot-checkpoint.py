@@ -1,8 +1,10 @@
 import os
 import random
 from os import environ
-
+import pandas as pd
 from discord.ext import commands
+
+puntDF = pd.read_csv('surrender.csv')
 
 TOKEN = environ['DISCORD_TOKEN']
 
@@ -33,5 +35,10 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
         for _ in range(number_of_dice)
     ]
     await ctx.send(', '.join(dice))
+    
+@bot.command(name='game', help='Get surrender index for a game ID.')
+async def game(ctx, game_id: int):
+    gameDF = puntDF[puntDF.gameID == game_id]
+    await ctx.send(len(gameDF))
 
 bot.run(TOKEN)

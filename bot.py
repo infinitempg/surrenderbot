@@ -13,6 +13,8 @@ TOKEN = environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='s!')
 
+bot.remove_command('help')
+
 @bot.command(name='help', help='Help')
 async def help(ctx):
     embed=discord.Embed(title=" ", color=0xff9500)

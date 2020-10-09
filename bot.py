@@ -1,11 +1,12 @@
 import os
 import random
+from os import environ
 
 from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='s!')
 

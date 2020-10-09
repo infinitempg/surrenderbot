@@ -51,7 +51,7 @@ async def top(ctx):
     top5DF = puntDF.head(5)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Game Situation', 'Punt','Index','Rank','Perc.']],headers='keys',tablefmt='simple',showindex=False)
-    await ctx.send("```table```")
+    await ctx.send("```%s```"%table)
     return
 
 bot.run(TOKEN)

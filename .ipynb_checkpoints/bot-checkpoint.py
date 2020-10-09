@@ -2,7 +2,9 @@ import os
 import random
 from os import environ
 import pandas as pd
+import tabulate
 from discord.ext import commands
+from tabulate import tabulate
 
 puntDF = pd.read_csv('surrender.csv')
 
@@ -39,6 +41,8 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
 @bot.command(name='game', help='Get surrender index for a game ID.')
 async def game(ctx, game_id: int):
     gameDF = puntDF[puntDF.gameID == game_id]
-    await ctx.send(len(gameDF))
+      
+    await ctx.send(print(tabulate(gameDF[['teamPoss','recTeam','Q','time','down','distance','dist2goal', 'play','surrenderIndex','surrenderRank']],
+                                  headers='keys',tablefmt='github',showindex=False)))
 
 bot.run(TOKEN)

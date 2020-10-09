@@ -130,9 +130,11 @@ puntDF['result'] = puntDF.apply(lambda row : touchback(row),axis = 1)
 puntDF['scoreDiff'] = puntDF.apply(lambda row : scoreDiff(row),axis = 1)
 puntDF['puntDist'] = puntDF.apply(lambda row : puntDist(row),axis = 1)
 puntDF['puntEndLoc'] = puntDF['dist2goal'] - puntDF['puntDist']
-puntDF = puntDF[['S','gameID','Q','time','awayTeam','awayScore','homeScore','homeTeam','teamPoss',
-                 'recTeam','down','distance','side','dist2goal','puntDist','puntEndLoc','surrenderIndex',
-                 'percentiles','NFLpercentiles','play','result']]
+puntDF['surrenderRank'] = puntDF.surrenderIndex.rank(method='max',ascending=False)
+puntDF = puntDF[['S', 'gameID', 'Q', 'time', 'awayTeam', 'awayScore', 'homeScore',
+       'homeTeam', 'teamPoss', 'recTeam', 'down', 'distance', 'dist2goal', 'puntDist',
+       'puntEndLoc', 'surrenderIndex','surrenderRank', 'percentiles', 'NFLpercentiles', 'play',
+       'result']]
 
 print('Exporting Surrender DF...')
 puntDF.to_csv('surrender.csv')

@@ -104,6 +104,6 @@ class AllTime(commands.Cog):
         await ctx.send("```%s```"%table)
         return
 
-bot.add_cog(GameStats())
-bot.add_cog(AllTime())
+bot.add_cog(GameStats(bot))
+bot.add_cog(AllTime(bot))
 bot.run(TOKEN)

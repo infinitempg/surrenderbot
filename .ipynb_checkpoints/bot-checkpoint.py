@@ -48,7 +48,7 @@ async def game(ctx, game_id: int):
   
 @bot.command(name='top', help='List of top Surrender Punts')
 async def top(ctx):
-    top5DF = puntDF.head(5)
+    top5DF = puntDF.head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
     await ctx.send("Top 5 All-Time Surrender Punts")
@@ -62,14 +62,14 @@ async def topS(ctx, S: int):
         await ctx.send("Season not found.")
         return
 
-    top5DF = puntDF[puntDF.S == S].head(5)
+    top5DF = puntDF[puntDF.S == S].head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
     await ctx.send("Top 5 Surrender Punts in S%i"%S)
     await ctx.send("```%s```"%table)
     return
 
-@bot.command(name='topT', help='List of top Surrender Punts by Team')
+@bot.command(name='topTeam', help='List of top Surrender Punts by Team')
 async def topTeam(ctx, team: str):
 
     if team == 'ARI':
@@ -84,7 +84,7 @@ async def topTeam(ctx, team: str):
     else:
         teamT = team
 
-    top5DF = puntDF[puntDF.teamPoss == teamT].head(5)
+    top5DF = puntDF[puntDF.teamPoss == teamT].head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
     await ctx.send("Top 5 Surrender Punts for %s"%team)

@@ -16,6 +16,11 @@ bot = commands.Bot(command_prefix='s!')
 @bot.command(name='game', help='Get surrender index for a game ID.')
 async def game(ctx, game_id: int):
     gameDF = puntDF[(puntDF.gameID == game_id) & (puntDF.percentiles >= 90)]
+    
+    if len(gameDF) < 1:
+        await ctx.send("Error - Game Not Found")
+        return
+    
     num = gameDF['S'].iloc[0]
     if num < 10:
         strnum = '0' + str(num)

@@ -4,7 +4,6 @@ from os import environ
 
 from discord.ext import commands
 
-load_dotenv()
 TOKEN = environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='s!')

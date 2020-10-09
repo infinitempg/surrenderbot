@@ -100,14 +100,14 @@ Get PBP
 S = 25
 
 sData = []
-idList = getSeasonIDs(S)
+idList, idDict = getSeasonIDs(S)
 
 print('Season:',S)
 print('Games:',len(idList))
 
 print('Gathering PBP...')
 for i in idList:
-    sData.append(getGameData(S,i))
+    sData.append(getGameData(S,i,idDict))
 
 sDF = pd.concat(sData)
 sDF.to_csv('PBP/S%sPBP.csv'%S)
@@ -133,7 +133,7 @@ print('Cleaning up PuntDF...')
 NFL = np.load("2009-2018_surrender_indices.npy")
 puntDF['recTeam'] = puntDF.apply(lambda row : receiving(row),axis=1)
 puntDF['surrenderIndex'] = puntDF.apply(lambda row : surrenderIndex(row),axis=1)
-puntDF = puntDF[['S','gameID','Q','time','awayTeam','awayScore','homeScore','homeTeam'
+puntDF = puntDF[['S','W','gameID','Q','time','awayTeam','awayScore','homeScore','homeTeam'
                  ,'teamPoss','recTeam','down','distance','side','dist2goal','surrenderIndex','play']]
 puntDF = puntDF.sort_values('surrenderIndex',ascending=False)
 puntDF['NFLpercentiles'] = puntDF.apply(lambda row : perc(NFL,row['surrenderIndex']),axis=1)
@@ -145,7 +145,7 @@ puntDF['puntEndLoc'] = puntDF['dist2goal'] - puntDF['puntDist']
 puntDF['surrenderRank'] = puntDF.surrenderIndex.rank(method='max',ascending=False).astype('int')
 puntDF['situation'] = puntDF.apply(lambda row : stringify(row), axis = 1)
 
-puntDF = puntDF[['S', 'gameID', 'Q', 'time', 'awayTeam', 'awayScore', 'homeScore',
+puntDF = puntDF[['S', 'W', 'gameID', 'Q', 'time', 'awayTeam', 'awayScore', 'homeScore',
        'homeTeam', 'teamPoss', 'recTeam', 'down', 'distance', 'dist2goal', 'puntDist',
        'puntEndLoc', 'surrenderIndex','surrenderRank', 'percentiles', 'NFLpercentiles', 'play',
        'situation','result']]

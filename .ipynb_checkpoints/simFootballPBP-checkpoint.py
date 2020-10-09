@@ -24,7 +24,10 @@ def getSeasonIDs(num,online = True,prefix = None,post=True):
         with open(prefix+'/GameResults.html') as f:
             soup = BeautifulSoup(f,'html.parser')
     
-    if num > 21:
+    if num > 24:
+        preseason = 28
+        postseason = 7
+    elif num > 21:
         preseason=24
         postseason=7
     elif num > 15:
@@ -36,6 +39,27 @@ def getSeasonIDs(num,online = True,prefix = None,post=True):
     else:
         preseason = 12
         postseason= 3
+        
+    if num < 2:
+        gpwk = 3
+    elif num <= 15:
+        gpwk = 4
+    elif num <= 21:
+        gpwk = 5
+    elif num <= 24:
+        gpwk = 6
+    else:
+        gpwk = 7
+        
+    if num <= 15:
+        wks = 14
+    elif num <= 22:
+        wks = 13
+    else:
+        wks = 16
+        
+    wkList = np.repeat(range(1,wks+1),gpwk)
+    wkList = np.append(wkList,np.repeat(wks+1,postseason))
     
     pbplist = soup.find_all('a',href=re.compile('Logs'))
     pbpURLs = [p.get('href') for p in pbplist]
@@ -45,7 +69,7 @@ def getSeasonIDs(num,online = True,prefix = None,post=True):
         idList = [p[5:].strip('.html') for p in pbpURLs[preseason:]]
     else:
         idList = [p[5:].strip('.html') for p in pbpURLs[preseason:-postseason]]
-    return idList
+    return idList, dict(zip(idList,wkList))
 
 def getTeams(S,teamID):
     if S < 5:
@@ -112,7 +136,7 @@ def puntPoss(play,teamPoss,awayTeam,homeTeam):
     else:
         return teamPoss
 
-def getGameData(S,gameID):
+def getGameData(S,gameID,idDict):
     if S < 10:
         strnum = '0' + str(S)
     elif S >= 10:
@@ -164,6 +188,7 @@ def getGameData(S,gameID):
     pbpDF.columns = ['teamID','Q','time','totTime','down','distance','side','yard','play']
     pbpDF['gameID'] = gameID
     pbpDF['S'] = S
+    pbpDF['W'] = idDict[gameID]
         
     teamList = list(pbpDF['side'].unique())
     teamList = [t for t in teamList if t != '']

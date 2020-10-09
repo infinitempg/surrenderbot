@@ -25,7 +25,7 @@ async def help(ctx):
     embed.add_field(name="Season Records", value="`s!topS [season #]`", inline=True)
     embed.add_field(name="Team Records", value="`s!topTeam [Team Initials]`", inline=True)
     await ctx.send(embed=embed)
-    
+    return
    
 @bot.command(name='game', help='Get surrender index for a game ID.')
 async def game(ctx, game_id: int):

@@ -41,8 +41,9 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
 @bot.command(name='game', help='Get surrender index for a game ID.')
 async def game(ctx, game_id: int):
     gameDF = puntDF[puntDF.gameID == game_id]
+    gameDF = gameDF.rename(columns = {'surrenderIndex':'Score','surrenderRank':'Rank'})
     table = tabulate(puntDF[puntDF.gameID == 6373][['situation', 'play','surrenderIndex','surrenderRank']],headers='keys',tablefmt='github',showindex=False)
-    await ctx.send('**%s @ %s - S%s**'%(gameDF['awayTeam'],gameDF['homeTeam'],gameDF['S']))
+    await ctx.send('**%s @ %s - S%s**'%(gameDF['awayTeam'].iloc[0],gameDF['homeTeam'].iloc[0],gameDF['S'].iloc[0]))
     await ctx.send("```%s```"%table)
 
 bot.run(TOKEN)

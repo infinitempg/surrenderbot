@@ -84,8 +84,16 @@ def puntDist(row):
     
 def stringify(row):
     num = ['st','nd','rd','th']
-    return "Q%s - %s - %i%s and %i"%(row['Q'],row['time'],row['down'],num[int(row['down'])-1],row['distance'])
-    
+    if row['awayTeam'] == row['teamPoss']:
+        puntScore = row['awayScore']
+        recScore = row['homeScore']
+    else:
+        puntScore = row['homeScore']
+        recScore = row['awayScore']
+    return "Q%s - %s - %i%s and %i\n%s %s - %s %s"%(row['Q'],row['time'],row['down'],num[int(row['down'])-1],row['distance'],row['teamPoss'],puntScore,row['recTeam'],recScore)
+
+
+
 '''
 Get PBP
 '''
@@ -134,7 +142,7 @@ puntDF['result'] = puntDF.apply(lambda row : touchback(row),axis = 1)
 puntDF['scoreDiff'] = puntDF.apply(lambda row : scoreDiff(row),axis = 1)
 puntDF['puntDist'] = puntDF.apply(lambda row : puntDist(row),axis = 1)
 puntDF['puntEndLoc'] = puntDF['dist2goal'] - puntDF['puntDist']
-puntDF['surrenderRank'] = puntDF.surrenderIndex.rank(method='max',ascending=False)
+puntDF['surrenderRank'] = puntDF.surrenderIndex.rank(method='max',ascending=False).astype('int')
 puntDF['situation'] = puntDF.apply(lambda row : stringify(row), axis = 1)
 
 puntDF = puntDF[['S', 'gameID', 'Q', 'time', 'awayTeam', 'awayScore', 'homeScore',

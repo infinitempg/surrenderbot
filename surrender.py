@@ -145,7 +145,7 @@ Surrender Punts
 '''
 
 print('Cleaning up PuntDF...')
-NFL = np.load("2009-2018_surrender_indices.npy")
+NFL = np.load("2009-2019_surrender_indices.npy")
 puntDF['recTeam'] = puntDF.apply(lambda row : receiving(row),axis=1)
 puntDF['surrenderIndex'] = puntDF.apply(lambda row : surrenderIndex(row),axis=1)
 puntDF = puntDF[['S','W','gameID','Q','time','awayTeam','awayScore','homeScore','homeTeam'

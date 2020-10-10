@@ -156,6 +156,7 @@ puntDF['puntDist'] = puntDF.apply(lambda row : puntDist(row),axis = 1)
 puntDF['puntEndLoc'] = puntDF['dist2goal'] - puntDF['puntDist']
 puntDF['surrenderRank'] = puntDF.surrenderIndex.rank(method='max',ascending=False).astype('int')
 puntDF['situation'] = puntDF.apply(lambda row : stringify(row), axis = 1)
+puntDF['play'] = puntDF['play'].str.replace('Dasistwirklichseinnachname, A.','D, Alex')
 puntDF['play'] = puntDF.apply(lambda row : splitline(row), axis = 1)
 
 puntDF = puntDF[['S', 'W', 'gameID', 'Q', 'time', 'awayTeam', 'awayScore', 'homeScore',

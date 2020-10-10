@@ -29,6 +29,7 @@ async def help(ctx):
     embed.add_field(name="All-Time Records", value="`s!top`", inline=True)
     embed.add_field(name="Season Records", value="`s!topS [season #]`", inline=True)
     embed.add_field(name="Team Records", value="`s!topTeam [Team Initials]`", inline=True)
+    embed.add_field(name="Player Records", value="`s!topPlayer [Player Last Name]`", inline=True)
     await ctx.send(embed=embed)
     return
    
@@ -209,7 +210,7 @@ async def topPlayer(ctx, player: str):
     
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','S','W','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
-    await ctx.send("Top 10 Surrender Punts for %s"%team)
+    await ctx.send("Top 10 Surrender Punts for %s"%player)
     await ctx.send("```%s```"%table)
     return
 

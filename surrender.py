@@ -96,7 +96,7 @@ def stringify(row):
     return "Q%s - %s - %i%s and %i\n%s %s - %s %s\n"%(row['Q'],row['time'],row['down'],num[int(row['down'])-1],row['distance'],row['teamPoss'],puntScore,row['recTeam'],recScore)
 
 def splitline(row):
-    string = test.play.iloc[0].split('yards. ')
+    string = row.play.iloc[0].split('yards. ')
     return str(string[0] + 'yards.\n' + string[1])
 
 '''

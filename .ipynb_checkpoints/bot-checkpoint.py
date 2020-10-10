@@ -25,7 +25,7 @@ async def help(ctx):
     embed=discord.Embed(title=" ", color=0xff9500)
     embed.set_author(name="Commands for Surrender Bot")
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
-    embed.add_field(name="Game Commands", value="`s!game [season #] [week #] [team]`", inline=True)
+    embed.add_field(name="Game Commands", value="`s!game [season #] [week #] [team]`", inline=False)
     embed.add_field(name="All-Time Records", value="`s!top`", inline=True)
     embed.add_field(name="Season Records", value="`s!topS [season #]`", inline=True)
     embed.add_field(name="Team Records", value="`s!topTeam [Team Initials]`", inline=True)
@@ -86,7 +86,7 @@ async def gameID(ctx, game_id: int):
 
 @bot.command(name='game', help='Get surrender indexes for a game (by Season, Week, Team).')
 async def game(ctx, S: int, W: int, Team: str):
-    gameDF = gameDF[(gameDF.S == S) & (gameDF.W == W) & ((gameDF.homeTeam == Team) | (s25.awayTeam == Team))]
+    gameDF = puntDF[(puntDF.S == S) & (puntDF.W == W) & ((puntDF.homeTeam == Team) | (puntDF.awayTeam == Team))]
 
     if len(gameDF) < 1:
         await ctx.send("Error - Game Not Found")

@@ -3,6 +3,9 @@ import numpy as np
 import os
 from scipy.stats import percentileofscore as perc
 from simFootballPBP import *
+import boto3
+
+s3 = boto3.client('s3')
 
 '''
 Functions
@@ -111,10 +114,15 @@ for i in idList:
 
 sDF = pd.concat(sData)
 sDF.to_csv('PBP/S%sPBP.csv'%S)
+s3.upload_file('PBP/S%sPBP.csv'%S,'isfl-surrender-bot','PBP/S%s.csv'%s)
 
 print('PBP for S%s saved!'%S)
 
 print('Combining all Seasons...')
+
+for i in range(1,S+1):
+    s3.download_file('isfl-surrender-bot','PBP/S%iPBP.csv'%i,'PBP/S%iPBP.csv'%i)
+
 import os
 allDF = pd.concat([pd.read_csv('PBP/%s'%p) for p in next(os.walk('PBP'))[2] if '.csv' in p])
 allDF = allDF.reset_index().sort_values('S')
@@ -152,5 +160,6 @@ puntDF = puntDF[['S', 'W', 'gameID', 'Q', 'time', 'awayTeam', 'awayScore', 'home
 
 print('Exporting Surrender DF...')
 puntDF.to_csv('surrender.csv')
+s3.upload_file('surrender.csv','isfl-surrender-bot','surrender.csv')
 
 print('Done!')

@@ -6,7 +6,11 @@ import tabulate
 import discord
 from discord.ext import commands
 from tabulate import tabulate
+import boto3
 
+s3 = boto3.client('s3')
+
+s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
 puntDF = pd.read_csv('surrender.csv')
 
 TOKEN = environ['DISCORD_TOKEN']

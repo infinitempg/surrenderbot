@@ -52,7 +52,7 @@ async def gameID(ctx, game_id: int):
 
     await ctx.send("All punts from S%i W%i - %s @ %s (%i total):"%(gameDF.S.iloc[0],gameDF.W.iloc[0],
                                                                    gameDF.awayTeam.iloc[0],gameDF.homeTeam.iloc[0],
-                                                                   game_id, len(gameDF)))
+                                                                   len(gameDF)))
     
     gameDF = gameDF.rename(columns={'situation':'Game Situation','play':'Punt',
                                     'surrenderIndex':"Index",'surrenderRank':'Rank',

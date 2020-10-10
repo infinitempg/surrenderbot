@@ -99,6 +99,9 @@ def splitline(row):
     string = row.play.split('yards. ')
     if len(string) > 1:
         return str(string[0] + 'yards.\n' + string[1])
+    elif "BLOCKED" in string[0]:
+        split = row.play.split('BLOCKED')
+        return str(split[0] + 'BLOCKED\n' + split[1])
     else:
         return row.play
 '''

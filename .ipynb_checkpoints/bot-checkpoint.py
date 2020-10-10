@@ -25,7 +25,7 @@ async def help(ctx):
     embed=discord.Embed(title=" ", color=0xff9500)
     embed.set_author(name="Commands for Surrender Bot")
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
-    embed.add_field(name="Game Commands", value="`s!game [gameID]`", inline=True)
+    embed.add_field(name="Game Commands", value="`s!game [season #] [week #] [team]`", inline=True)
     embed.add_field(name="All-Time Records", value="`s!top`", inline=True)
     embed.add_field(name="Season Records", value="`s!topS [season #]`", inline=True)
     embed.add_field(name="Team Records", value="`s!topTeam [Team Initials]`", inline=True)
@@ -58,6 +58,7 @@ async def gameID(ctx, game_id: int):
                                     'surrenderIndex':"Index",'surrenderRank':'Rank',
                                     'percentiles':"Perc."})
     gameDF['Index'] = round(gameDF['Index'],3)
+    gameDF['Perc.'] = round(gameDF['Perc.'],3)
     
     if len(gameDF) <= 10:
         table = tabulate(gameDF[['Rank','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='psql',showindex=False)
@@ -81,6 +82,41 @@ async def gameID(ctx, game_id: int):
 #         embed.add_field(name="Percentile", value=round(gameDF['percentiles'].iloc[i],3), inline=True)
 #         embed.set_footer(text="SurrenderBot, by infinitempg")
 #         await ctx.send(embed=embed)
+    return
+
+@bot.command(name='game', help='Get surrender indexes for a game (by Season, Week, Team).')
+async def game(ctx, S: int, W: int, Team: str):
+    gameDF = gameDF[(gameDF.S == S) & (gameDF.W == W) & ((gameDF.homeTeam == Team) | (s25.awayTeam == Team))]
+
+    if len(gameDF) < 1:
+        await ctx.send("Error - Game Not Found")
+        return
+    
+    num = gameDF['S'].iloc[0]
+    if num < 10:
+        strnum = '0' + str(num)
+    elif num >= 10:
+        strnum = str(num)
+
+    await ctx.send("All punts from S%i W%i - %s @ %s (%i total):"%(gameDF.S.iloc[0],gameDF.W.iloc[0],
+                                                                   gameDF.awayTeam.iloc[0],gameDF.homeTeam.iloc[0],
+                                                                   len(gameDF)))
+    
+    gameDF = gameDF.rename(columns={'situation':'Game Situation','play':'Punt',
+                                    'surrenderIndex':"Index",'surrenderRank':'Rank',
+                                    'percentiles':"Perc."})
+    gameDF['Index'] = round(gameDF['Index'],3)
+    gameDF['Perc.'] = round(gameDF['Perc.'],3)
+    
+    if len(gameDF) <= 10:
+        table = tabulate(gameDF[['Rank','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='psql',showindex=False)
+        await ctx.send("```%s```"%table)
+    else:
+        game1DF, game2DF = np.split(gameDF, [int(.5*len(gameDF))])
+        table1 = tabulate(game1DF[['Rank','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='psql',showindex=False)
+        table2 = tabulate(game2DF[['Rank','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='psql',showindex=False)
+        await ctx.send("```%s```"%table1)
+        await ctx.send("```%s```"%table2)
     return
   
 @bot.command(name='top', help='List of top Surrender Punts')

@@ -9,8 +9,6 @@ from discord.ext import commands
 from tabulate import tabulate
 import boto3
 
-s3 = boto3.client('s3')
-
 TOKEN = environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='s!')
@@ -19,7 +17,7 @@ bot.remove_command('help')
 
 @bot.command(name='help', help='Help')
 async def help(ctx):
-    
+    s3 = boto3.client('s3')
     s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
     puntDF = pd.read_csv('surrender.csv')
     
@@ -37,6 +35,7 @@ async def help(ctx):
     
 @bot.command(name='stats', help='Get surrender index for a game ID.')
 async def stats(ctx):
+    s3 = boto3.client('s3')
     s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
     puntDF = pd.read_csv('surrender.csv')
     
@@ -50,6 +49,7 @@ async def stats(ctx):
     
 @bot.command(name='gameID', help='Get surrender index for a game ID.')
 async def gameID(ctx, game_id: int):
+    s3 = boto3.client('s3')
     s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
     puntDF = pd.read_csv('surrender.csv')
     
@@ -105,6 +105,7 @@ async def gameID(ctx, game_id: int):
 
 @bot.command(name='game', help='Get surrender indexes for a game (by Season, Week, Team).')
 async def game(ctx, S: int, W: int, Team: str):
+    s3 = boto3.client('s3')
     s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
     puntDF = pd.read_csv('surrender.csv')
     
@@ -143,6 +144,7 @@ async def game(ctx, S: int, W: int, Team: str):
   
 @bot.command(name='top', help='List of top Surrender Punts')
 async def top(ctx):
+    s3 = boto3.client('s3')
     s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
     puntDF = pd.read_csv('surrender.csv')
     
@@ -155,6 +157,7 @@ async def top(ctx):
 
 @bot.command(name='topS', help='List of top Surrender Punts by Season')
 async def topS(ctx, S: int):
+    s3 = boto3.client('s3')
     s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
     puntDF = pd.read_csv('surrender.csv')
     
@@ -171,6 +174,7 @@ async def topS(ctx, S: int):
 
 @bot.command(name='topTeam', help='List of top Surrender Punts by Team')
 async def topTeam(ctx, team: str):
+    s3 = boto3.client('s3')
     s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
     puntDF = pd.read_csv('surrender.csv')
     if team == 'ARI':

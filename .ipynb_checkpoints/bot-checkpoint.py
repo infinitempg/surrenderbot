@@ -196,4 +196,21 @@ async def topTeam(ctx, team: str):
     await ctx.send("```%s```"%table)
     return
 
+@bot.command(name='topPlayer', help='List of top Surrender Punts by Player')
+async def topPlayer(ctx, player: str):
+    s3 = boto3.client('s3')
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
+
+    top5DF = puntDF[puntDF.play.str.contains(player)].head(10)
+    
+    if len(top5DF) < 1:
+        await ctx.send("Player not found.")
+    
+    top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
+    table = tabulate(top5DF[['Rank','S','W','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+    await ctx.send("Top 10 Surrender Punts for %s"%team)
+    await ctx.send("```%s```"%table)
+    return
+
 bot.run(TOKEN)

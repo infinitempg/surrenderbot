@@ -11,9 +11,6 @@ import boto3
 
 s3 = boto3.client('s3')
 
-s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
-puntDF = pd.read_csv('surrender.csv')
-
 TOKEN = environ['DISCORD_TOKEN']
 
 bot = commands.Bot(command_prefix='s!')
@@ -22,6 +19,10 @@ bot.remove_command('help')
 
 @bot.command(name='help', help='Help')
 async def help(ctx):
+    
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
+    
     embed=discord.Embed(title=" ", color=0xff9500)
     embed.set_author(name="Commands for Surrender Bot")
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
@@ -36,6 +37,9 @@ async def help(ctx):
     
 @bot.command(name='stats', help='Get surrender index for a game ID.')
 async def stats(ctx):
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
+    
     embed=discord.Embed(title=" ", color=0xff9500)
     embed.set_author(name="Overall Statistics")
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
@@ -46,6 +50,9 @@ async def stats(ctx):
     
 @bot.command(name='gameID', help='Get surrender index for a game ID.')
 async def gameID(ctx, game_id: int):
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
+    
     gameDF = puntDF[(puntDF.gameID == game_id)]
 
     if len(gameDF) < 1:
@@ -98,6 +105,9 @@ async def gameID(ctx, game_id: int):
 
 @bot.command(name='game', help='Get surrender indexes for a game (by Season, Week, Team).')
 async def game(ctx, S: int, W: int, Team: str):
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
+    
     gameDF = puntDF[(puntDF.S == S) & (puntDF.W == W) & ((puntDF.homeTeam == Team) | (puntDF.awayTeam == Team))]
 
     if len(gameDF) < 1:
@@ -133,6 +143,9 @@ async def game(ctx, S: int, W: int, Team: str):
   
 @bot.command(name='top', help='List of top Surrender Punts')
 async def top(ctx):
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
+    
     top5DF = puntDF.head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
     table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
@@ -142,7 +155,9 @@ async def top(ctx):
 
 @bot.command(name='topS', help='List of top Surrender Punts by Season')
 async def topS(ctx, S: int):
-
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
+    
     if S not in puntDF.S.unique():
         await ctx.send("Season not found.")
         return
@@ -156,7 +171,8 @@ async def topS(ctx, S: int):
 
 @bot.command(name='topTeam', help='List of top Surrender Punts by Team')
 async def topTeam(ctx, team: str):
-
+    s3.download_file('isfl-surrender-bot','surrender.csv','surrender.csv')
+    puntDF = pd.read_csv('surrender.csv')
     if team == 'ARI':
         teamT = 'AZ'
     elif team == 'NYS':

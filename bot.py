@@ -49,7 +49,7 @@ async def gameID(ctx, game_id: int):
     else:
         urlprefix = "http://sim-football.com/indexes/ISFLS%s"%strnum
 
-    await ctx.send("All 90th percentile punts from  (%i total):"%(game_id, len(gameDF)))
+    await ctx.send("All 90th percentile punts from %i (%i total):"%(game_id, len(gameDF)))
     
     gameDF = gameDF.rename(columns={'situation':'Game Situation','play':'Punt',
                                     'surrenderIndex':"Index",'surrenderRank':'Rank',

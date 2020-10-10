@@ -25,6 +25,7 @@ async def help(ctx):
     embed=discord.Embed(title=" ", color=0xff9500)
     embed.set_author(name="Commands for Surrender Bot")
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
+    embed.add_field(name="Overall Statistics", value="`s!stats`")
     embed.add_field(name="Game Commands", value="`s!game [season #] [week #] [team]`", inline=False)
     embed.add_field(name="All-Time Records", value="`s!top`", inline=True)
     embed.add_field(name="Season Records", value="`s!topS [season #]`", inline=True)
@@ -32,6 +33,17 @@ async def help(ctx):
     await ctx.send(embed=embed)
     return
    
+    
+@bot.command(name='stats', help='Get surrender index for a game ID.')
+async def stats(ctx):
+    embed=discord.Embed(title=" ", color=0xff9500)
+    embed.set_author(name="Overall Statistics")
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
+    embed.add_field(name="Number of Punts", value=len(puntDF),inline=True)
+    embed.add_field(name="Highest Surrender Index", value=puntDF.surrenderIndex.iloc[0],inline=True)
+    await ctx.send(embed=embed)
+    return
+    
 @bot.command(name='gameID', help='Get surrender index for a game ID.')
 async def gameID(ctx, game_id: int):
     gameDF = puntDF[(puntDF.gameID == game_id)]

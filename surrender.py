@@ -95,7 +95,9 @@ def stringify(row):
         recScore = row['awayScore']
     return "Q%s - %s - %i%s and %i\n%s %s - %s %s\n"%(row['Q'],row['time'],row['down'],num[int(row['down'])-1],row['distance'],row['teamPoss'],puntScore,row['recTeam'],recScore)
 
-
+def splitline(row):
+    split = row['play'].split('. ')
+    return str(split[0] + "\n" + split[1])
 
 '''
 Get PBP
@@ -152,6 +154,7 @@ puntDF['puntDist'] = puntDF.apply(lambda row : puntDist(row),axis = 1)
 puntDF['puntEndLoc'] = puntDF['dist2goal'] - puntDF['puntDist']
 puntDF['surrenderRank'] = puntDF.surrenderIndex.rank(method='max',ascending=False).astype('int')
 puntDF['situation'] = puntDF.apply(lambda row : stringify(row), axis = 1)
+puntDF['play'] = puntDF.apply(lambda row : splitline(row), axis = 1)
 
 puntDF = puntDF[['S', 'W', 'gameID', 'Q', 'time', 'awayTeam', 'awayScore', 'homeScore',
        'homeTeam', 'teamPoss', 'recTeam', 'down', 'distance', 'dist2goal', 'puntDist',

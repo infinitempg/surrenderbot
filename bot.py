@@ -55,13 +55,15 @@ async def gameID(ctx, game_id: int):
     gameDF = gameDF.rename(columns={'situation':'Game Situation','play':'Punt',
                                     'surrenderIndex':"Index",'surrenderRank':'Rank',
                                     'percentiles':"Perc."})
+    gameDF['Index'] = round(gameDF['Index'],3)
+    
     if len(gameDF) <= 10:
-        table = tabulate(gameDF[['Game Situation', 'Punt','Index','Rank','Perc.']],headers='keys',tablefmt='simple',showindex=False)
+        table = tabulate(gameDF[['Rank','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='psql',showindex=False)
         await ctx.send("```%s```"%table)
     else:
         game1DF, game2DF = np.split(gameDF, [int(.5*len(gameDF))])
-        table1 = tabulate(game1DF[['Game Situation', 'Punt','Index','Rank','Perc.']],headers='keys',tablefmt='simple',showindex=False)
-        table2 = tabulate(game2DF[['Game Situation', 'Punt','Index','Rank','Perc.']],headers='keys',tablefmt='simple',showindex=False)
+        table1 = tabulate(game1DF[['Rank','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='psql',showindex=False)
+        table2 = tabulate(game2DF[['Rank','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='psql',showindex=False)
         await ctx.send("```%s```"%table1)
         await ctx.send("```%s```"%table2)
         
@@ -83,7 +85,7 @@ async def gameID(ctx, game_id: int):
 async def top(ctx):
     top5DF = puntDF.head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
-    table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+    table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='psql',showindex=False)
     await ctx.send("Top 10 All-Time Surrender Punts")
     await ctx.send("```%s```"%table)
     return
@@ -97,7 +99,7 @@ async def topS(ctx, S: int):
 
     top5DF = puntDF[puntDF.S == S].head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
-    table = tabulate(top5DF[['Rank','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+    table = tabulate(top5DF[['Rank','Game Situation', 'Punt','Index']],headers='keys',tablefmt='psql',showindex=False)
     await ctx.send("Top 10 Surrender Punts in S%i"%S)
     await ctx.send("```%s```"%table)
     return
@@ -119,7 +121,7 @@ async def topTeam(ctx, team: str):
 
     top5DF = puntDF[puntDF.teamPoss == teamT].head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
-    table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+    table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='psql',showindex=False)
     await ctx.send("Top 10 Surrender Punts for %s"%team)
     await ctx.send("```%s```"%table)
     return

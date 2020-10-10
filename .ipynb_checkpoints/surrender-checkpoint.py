@@ -118,7 +118,7 @@ for i in idList:
 
 sDF = pd.concat(sData)
 sDF.to_csv('PBP/S%sPBP.csv'%S)
-s3.upload_file('PBP/S%sPBP.csv'%S,'isfl-surrender-bot','PBP/S%s.csv'%S)
+s3.upload_file('PBP/S%sPBP.csv'%S,'isfl-surrender-bot','PBP/S%sPBP.csv'%S)
 
 print('PBP for S%s saved!'%S)
 

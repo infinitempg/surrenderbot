@@ -97,8 +97,10 @@ def stringify(row):
 
 def splitline(row):
     string = row.play.split('yards. ')
-    return str(string[0] + 'yards.\n' + string[1])
-
+    if len(string) > 1:
+        return str(string[0] + 'yards.\n' + string[1])
+    else:
+        return row.play
 '''
 Get PBP
 '''

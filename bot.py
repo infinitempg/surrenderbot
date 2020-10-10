@@ -40,7 +40,7 @@ async def stats(ctx):
     embed.set_author(name="Overall Statistics")
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/685587194861060146/731295955982483547/ISFL_logo_2000px.png")
     embed.add_field(name="Number of Punts", value=len(puntDF),inline=True)
-    embed.add_field(name="Highest Surrender Index", value=puntDF.surrenderIndex.iloc[0],inline=True)
+    embed.add_field(name="Highest Surrender Index", value=round(puntDF.surrenderIndex.iloc[0],3),inline=True)
     await ctx.send(embed=embed)
     return
     

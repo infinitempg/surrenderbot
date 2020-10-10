@@ -59,7 +59,13 @@ def getSeasonIDs(num,online = True,prefix = None,post=True):
         wks = 16
         
     wkList = np.repeat(range(1,wks+1),gpwk)
-    wkList = np.append(wkList,np.repeat(wks+1,postseason))
+    if num <= 15:
+        wkList = np.append(wkList,np.repeat(wks+1,postseason))
+        wkList[-1] = wks+2
+    else:
+        wkList = np.append(wkList,np.repeat(wks+1,4))
+        wkList = np.append(wkList,np.repeat(wks+2,3))
+        wkList[-1] = wks+3
     
     pbplist = soup.find_all('a',href=re.compile('Logs'))
     pbpURLs = [p.get('href') for p in pbplist]

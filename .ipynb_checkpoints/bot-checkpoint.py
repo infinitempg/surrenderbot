@@ -33,7 +33,7 @@ async def help(ctx):
    
 @bot.command(name='gameID', help='Get surrender index for a game ID.')
 async def gameID(ctx, game_id: int):
-    gameDF = puntDF[(puntDF.gameID == game_id) & (puntDF.percentiles >= 90)]
+    gameDF = puntDF[(puntDF.gameID == game_id)]
 
     if len(gameDF) < 1:
         await ctx.send("Error - Game Not Found")
@@ -49,7 +49,7 @@ async def gameID(ctx, game_id: int):
     else:
         urlprefix = "http://sim-football.com/indexes/ISFLS%s"%strnum
 
-    await ctx.send("All 90th percentile punts from %i (%i total):"%(game_id, len(gameDF)))
+    await ctx.send("All punts from %i (%i total):"%(game_id, len(gameDF)))
     
     gameDF = gameDF.rename(columns={'situation':'Game Situation','play':'Punt',
                                     'surrenderIndex':"Index",'surrenderRank':'Rank',

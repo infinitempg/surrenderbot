@@ -151,7 +151,7 @@ async def top(ctx):
     
     top5DF = puntDF.head(10)
     top5DF = top5DF.rename(columns={'situation':'Game Situation','play':'Punt','surrenderIndex':"Index",'surrenderRank':'Rank','percentiles':"Perc."})
-    table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index']],headers='keys',tablefmt='simple',showindex=False)
+    table = tabulate(top5DF[['Rank','S','Game Situation', 'Punt','Index','Perc.']],headers='keys',tablefmt='simple',showindex=False)
     await ctx.send("Top 10 All-Time Surrender Punts")
     await ctx.send("```%s```"%table)
     return

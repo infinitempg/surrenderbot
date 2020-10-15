@@ -4,6 +4,7 @@ import os
 from scipy.stats import percentileofscore as perc
 from simFootballPBP import *
 import boto3
+from os import environ
 
 s3 = boto3.client('s3')
 
@@ -172,3 +173,10 @@ puntDF.to_csv('surrender.csv')
 s3.upload_file('surrender.csv','isfl-surrender-bot','surrender.csv')
 
 print('Done!')
+
+print('Restarting SurrenderBot')
+import heroku3
+heroku_conn = heroku3.from_key(environ['HEROKU_KEY'])
+app = heroku_conn.apps()['surrenderbot']
+app.restart()
+print('App Restarted!')

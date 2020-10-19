@@ -178,12 +178,13 @@ print('Checking if new week...')
 s3.download_file('isfl-surrender-bot','curSW.csv','curSW.csv')
 curSW = pd.read_csv('curSW.csv').iloc[0]
 
+curS = S
+curW = max(idDict.values())
+
 if curSW.S == S and curSW.W == max(idDict.values()):
     print('No update.')
 else:
-    newSW = pd.DataFrame([[S,max(idDict.values())]],columns=['S','W'])
-    newSW.to_csv('curSW.csv')
-    s3.upload_file('curSW.csv','isfl-surrender-bot','curSW.csv')
+    print('Updating!')
     
     print('Season:',S)
     print('Games:',len(idList))
@@ -273,5 +274,10 @@ else:
         api.update_status(thisWeek.tweet.iloc[i])
 
     print('Tweeted!')
+    
+    
+    newSW = pd.DataFrame([[S,max(idDict.values())]],columns=['S','W'])
+    newSW.to_csv('curSW.csv')
+    s3.upload_file('curSW.csv','isfl-surrender-bot','curSW.csv')
     
 print('All Done. Goodbye!')

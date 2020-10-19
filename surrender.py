@@ -181,7 +181,7 @@ curSW = pd.read_csv('curSW.csv').iloc[0]
 if curSW.S == S and curSW.W == max(idDict.values()):
     print('No update.')
 else:
-    newSW = pd.DataFrame([[curS,curW]],columns=['S','W'])
+    newSW = pd.DataFrame([[S,max(idDict.values())]],columns=['S','W'])
     newSW.to_csv('curSW.csv')
     s3.upload_file('curSW.csv','isfl-surrender-bot','curSW.csv')
     

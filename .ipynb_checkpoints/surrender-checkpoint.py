@@ -270,7 +270,7 @@ else:
         string = "In S%i W%i, %s decided to punt to %s from the %s on %s and %i with %s remaining in the %s quarter while %s %i to %i.\n\nWith a Surrender Index of %.2f, this punt ranks at the %s percentile of cowardly punts in ISFL History. Overall, it is ranked #%i all time."%(row.S,row.W,row.teamPoss,row.recTeam,loc,dW,row.distance,row.time,Q,rel,puntScore,recScore,row.surrenderIndex,perc,row.surrenderRank)
         return string
 
-    thisWeek = testDF[(testDF.S == curS) & (testDF.W == curW) & (testDF.percentiles >= 90)].sort_values("percentiles")
+    thisWeek = puntDF[(puntDF.S == curS) & (puntDF.W == curW) & (puntDF.percentiles >= 90)].sort_values("percentiles")
     thisWeek['tweet'] = thisWeek.apply(lambda x : tweetMessage(x),axis=1)
     for i in range(len(thisWeek)):
         api.update_status(thisWeek.tweet.iloc[i])
